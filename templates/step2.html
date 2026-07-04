@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 2 — Descriptive Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f13;
+    color: #f0ece4;
+    min-height: 100vh;
+  }
+
+  /* BANNER */
+  .banner {
+    background: #b42828;
+    padding: 1rem clamp(2rem, 10vw, 10rem);
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .banner-badge {
+    background: rgba(255,255,255,0.15);
+    border-radius: 50px;
+    padding: 0.3rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .banner p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .banner strong {
+    color: #fff;
+  }
+
+  /* HERO */
+  .hero {
+    padding: clamp(3rem, 6vw, 5rem) clamp(2rem, 10vw, 10rem) 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(180,40,40,0.1), transparent 65%);
+    pointer-events: none;
+  }
+
+  .step-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #b42828;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: rgba(240,236,228,0.4);
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: rgba(240,236,228,0.45);
+    max-width: 480px;
+    line-height: 1.8;
+  }
+
+  /* FORM */
+  .form-section {
+    padding: 2rem clamp(2rem, 10vw, 10rem) clamp(4rem, 8vw, 6rem);
+  }
+
+  .questions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .question-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(240,236,228,0.08);
+    border-radius: 14px;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.25s;
+  }
+
+  .question-card:focus-within {
+    border-color: rgba(180,40,40,0.4);
+    background: rgba(180,40,40,0.04);
+  }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+
+  .q-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(180,40,40,0.15);
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .q-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .q-title {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #f0ece4;
+  }
+
+  .q-hint {
+    font-size: 0.7rem;
+    color: rgba(240,236,228,0.35);
+    line-height: 1.5;
+  }
+
+  textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(240,236,228,0.1);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.87rem;
+    font-weight: 300;
+    color: #f0ece4;
+    resize: vertical;
+    min-height: 110px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.7;
+  }
+
+  textarea::placeholder {
+    color: rgba(240,236,228,0.2);
+  }
+
+  textarea:focus {
+    border-color: rgba(180,40,40,0.5);
+    background: rgba(180,40,40,0.05);
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  button[type="submit"] {
+    background: #b42828;
+    color: #fff;
+    border: none;
+    padding: 1rem 2.8rem;
+    border-radius: 60px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  }
+
+  button[type="submit"]:hover {
+    background: #8f1f1f;
+    box-shadow: 0 8px 24px rgba(180,40,40,0.35);
+    transform: translateY(-1px);
+  }
+
+  .form-note {
+    font-size: 0.72rem;
+    color: rgba(240,236,228,0.3);
+    line-height: 1.7;
+    max-width: 320px;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .progress-step .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .progress-step.done .dot  { background: #b42828; }
+  .progress-step.done       { color: rgba(240,236,228,0.4); }
+  .progress-step.active .dot { background: #f0ece4; }
+  .progress-step.active      { color: #f0ece4; font-weight: 500; }
+
+  .progress-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(240,236,228,0.1);
+    max-width: 60px;
+  }
+
+  @media (max-width: 640px) {
+    .questions-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BANNER: RF result passed from Step 1 -->
+<div class="banner">
+  <span class="banner-badge">Step 1 Complete</span>
+  <p>Hi <strong>{{ patient_name }}</strong>, your ML risk level is <strong>{{ predicted_class }}</strong>. Now tell us more about yourself.</p>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="step-label">Step 2 of 2 — Descriptive Assessment</span>
+  <h1>Help Us Understand<br><em>Your Story</em></h1>
+  <p>Describe your lifestyle and symptoms in your own words. Our AI will combine this with your ML result to generate a personalised health analysis.</p>
+
+  <div class="progress-bar" style="margin-top: 2rem;">
+    <div class="progress-step done"><span class="dot"></span> Numeric Profile</div>
+    <div class="progress-line"></div>
+    <div class="progress-step active"><span class="dot"></span> Descriptive Assessment</div>
+    <div class="progress-line"></div>
+    <div class="progress-step" style="color:rgba(240,236,228,0.25);font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;">
+      <span class="dot" style="background:rgba(240,236,228,0.15);width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Final Report
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section">
+  <form method="POST" action="/analyze">
+
+    <div class="questions-grid">
+
+      <div class="question-card">
+        <div class="q-header">
+          <div class="q-icon">🌫️</div>
+          <div class="q-meta">
+            <span class="q-title">Air Pollution Exposure</span>
+            <span class="q-hint">Describe your daily environment — workplace, home area, commute</span>
+          </div>
+        </div>
+        <textarea
+          name="desc_air_pollution"
+          placeholder="e.g. I live near an industrial area and my daily commute involves heavy traffic. I work indoors but the office has poor ventilation..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="q-header">
+          <div class="q-icon">🍷</div>
+          <div class="q-meta">
+            <span class="q-title">Alcohol Usage</span>
+            <span class="q-hint">Describe your drinking habits — frequency, quantity, duration</span>
+          </div>
+        </div>
+        <textarea
+          name="desc_alcohol"
+          placeholder="e.g. I drink socially on weekends, usually 2-3 glasses of wine. I've been drinking for about 5 years..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="q-header">
+          <div class="q-icon">🩸</div>
+          <div class="q-meta">
+            <span class="q-title">Coughing of Blood</span>
+            <span class="q-hint">Describe any symptoms — frequency, quantity, when it started</span>
+          </div>
+        </div>
+        <textarea
+          name="desc_coughing_blood"
+          placeholder="e.g. I noticed occasional blood-tinged mucus about 3 months ago, usually in the morning. It happens maybe once a week..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="question-card">
+        <div class="q-header">
+          <div class="q-icon">🧬</div>
+          <div class="q-meta">
+            <span class="q-title">Genetic Risk / Family History</span>
+            <span class="q-hint">Describe any family history of cancer or hereditary conditions</span>
+          </div>
+        </div>
+        <textarea
+          name="desc_genetic_risk"
+          placeholder="e.g. My father was diagnosed with lung cancer at age 58. My maternal grandmother had breast cancer. No other known cases..."
+          required
+        ></textarea>
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Generate Full Report →</button>
+      <p class="form-note">Your responses are combined with the ML prediction and analysed by an AI model. A report will be emailed to you.</p>
+    </div>
+
+  </form>
+</section>
+
+</body>
+</html>

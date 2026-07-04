@@ -1,0 +1,6 @@
+flask
+gunicorn
+pandas
+scikit-learn
+sib-api-v3-sdk
+groq

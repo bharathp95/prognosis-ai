@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancer Risk Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f13;
+    color: #f0ece4;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 clamp(2rem, 10vw, 10rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -30%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero small {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #b42828;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 400;
+    line-height: 1;
+    color: #f0ece4;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 em { font-style: italic; color: #b42828; }
+
+  .hero p {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(240,236,228,0.4);
+    max-width: 380px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .scroll-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #f0ece4;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: gap 0.3s;
+  }
+  .scroll-btn:hover { gap: 1.3rem; }
+  .scroll-btn span {
+    width: 42px; height: 42px;
+    border: 1px solid rgba(240,236,228,0.2);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 1rem;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .scroll-btn:hover span { background: #b42828; border-color: #b42828; }
+
+  /* FORM SECTION */
+  .section {
+    background: #f7f4ef;
+    color: #111;
+    padding: clamp(4rem, 8vw, 7rem) clamp(2rem, 10vw, 10rem);
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #b42828;
+    margin-bottom: 0.8rem;
+  }
+
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 400;
+    margin-bottom: 3rem;
+    line-height: 1.15;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #555;
+  }
+
+  input, select {
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #ddd8cf;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: #111;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus {
+    border-color: #b42828;
+    box-shadow: 0 0 0 3px rgba(180,40,40,0.08);
+  }
+
+  .field-blood label { color: #b42828; }
+  .field-blood input {
+    border-color: rgba(180,40,40,0.25);
+    background: rgba(180,40,40,0.03);
+  }
+  .field-blood input:focus {
+    border-color: #b42828;
+    box-shadow: 0 0 0 3px rgba(180,40,40,0.1);
+  }
+
+  .field-email label { color: #1a6e3c; }
+  .field-email input {
+    border-color: rgba(26,110,60,0.25);
+    background: rgba(26,110,60,0.03);
+  }
+  .field-email input:focus {
+    border-color: #1a6e3c;
+    box-shadow: 0 0 0 3px rgba(26,110,60,0.08);
+  }
+
+  .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  button[type="submit"] {
+    background: #b42828;
+    color: #fff;
+    border: none;
+    padding: 0.95rem 2.5rem;
+    border-radius: 60px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  }
+  button[type="submit"]:hover {
+    background: #8f1f1f;
+    box-shadow: 0 6px 20px rgba(180,40,40,0.3);
+    transform: translateY(-1px);
+  }
+
+  .form-note {
+    font-size: 0.72rem;
+    color: #999;
+    line-height: 1.7;
+    max-width: 340px;
+  }
+
+  /* RESULT */
+  .result-section {
+    background: #f7f4ef;
+    color: #111;
+    padding: 0 clamp(2rem, 10vw, 10rem) clamp(4rem, 8vw, 7rem);
+  }
+
+  .result-box {
+    background: #0f0f13;
+    border-radius: 16px;
+    padding: 3rem;
+    color: #f0ece4;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-box::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(180,40,40,0.18), transparent 70%);
+    pointer-events: none;
+  }
+
+  .result-box small {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #b42828;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .result-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+
+  .notify-tags {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 40px;
+    border: 1px solid rgba(240,236,228,0.12);
+    color: rgba(240,236,228,0.55);
+    background: rgba(240,236,228,0.05);
+  }
+
+  .prob-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .prob-item {
+    background: #fff;
+    border: 1px solid #ddd8cf;
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem;
+  }
+
+  .prob-item .name {
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+
+  .prob-item .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #111;
+  }
+
+  /* GROQ ANALYSIS BOX */
+  .analysis-box {
+    background: #fff;
+    border: 1px solid #ddd8cf;
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .analysis-box .analysis-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #b42828;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .analysis-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #111;
+    margin-bottom: 1.5rem;
+  }
+
+  .analysis-content {
+    font-size: 0.9rem;
+    line-height: 1.9;
+    color: #333;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <small>Machine Learning Powered Cancer Risk Assessment</small>
+  <h1>Know Your<br><em>Risk Level</em></h1>
+  <p>Answer a few health questions and our model will predict your cancer risk and send a report instantly.</p>
+  <a href="#form" class="scroll-btn">
+    <span>↓</span> Begin Assessment
+  </a>
+</section>
+
+<!-- STEP 1 FORM -->
+<section class="section" id="form">
+  <p class="section-label">Step 1 of 2 — Health Profile</p>
+  <h2>Complete the Form<br>Below</h2>
+
+  <form method="POST" action="/predict">
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="patient_name">Patient Name</label>
+        <input type="text" id="patient_name" name="Patient_Name" placeholder="Please enter your name" required>
+      </div>
+
+      <div class="field field-email">
+        <label for="receiver_email">Email Address</label>
+        <input type="email" id="receiver_email" name="receiver_email" placeholder="Report will be sent here" required>
+      </div>
+
+      <div class="field">
+        <label for="air_pollution">Air Pollution Exposure</label>
+        <input type="number" id="air_pollution" name="Air Pollution" placeholder="e.g. 5" required>
+      </div>
+
+      <div class="field">
+        <label for="genetic_risk">Genetic Risk</label>
+        <input type="number" id="genetic_risk" name="Genetic Risk" placeholder="e.g. 4" required>
+      </div>
+
+      <div class="field">
+        <label for="obesity">Obesity Level</label>
+        <input type="number" id="obesity" name="Obesity" placeholder="e.g. 4" required>
+      </div>
+
+      <div class="field">
+        <label for="balanced_diet">Balanced Diet</label>
+        <input type="number" id="balanced_diet" name="Balanced Diet" placeholder="e.g. 5" required>
+      </div>
+
+      <div class="field">
+        <label for="occupational_hazards">Occupational Hazards</label>
+        <input type="number" id="occupational_hazards" name="Occupational Hazards" placeholder="e.g. 3" required>
+      </div>
+
+      <div class="field field-blood">
+        <label for="coughing_blood">Coughing of Blood</label>
+        <input type="number" id="coughing_blood" name="coughing_of_blood" placeholder="e.g. 3" required>
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Next: Descriptive Assessment →</button>
+      <p class="form-note">For informational purposes only. Not a substitute for professional medical advice.</p>
+    </div>
+  </form>
+</section>
+
+<!-- FINAL RESULT (shown after Step 2) -->
+{% if result %}
+<section class="result-section">
+
+  <div class="result-box">
+    <small>ML Predicted Risk Level</small>
+    <h3>{{ result.predicted_class }}</h3>
+    <div class="notify-tags">
+      <span class="tag">✉️ Full Report Emailed</span>
+      <span class="tag">🤖 AI Analysis Included</span>
+    </div>
+  </div>
+
+  <div class="prob-grid">
+    {% for class, prob in result.predicted_probability.items() %}
+    <div class="prob-item">
+      <div class="name">{{ class }}</div>
+      <div class="value">{{ (prob * 100) | round(2) }}%</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="analysis-box">
+    <span class="analysis-label">AI Descriptive Analysis — Powered by Groq / LLaMA</span>
+    <h4>Personalised Health Insight</h4>
+    <div class="analysis-content">{{ result.groq_analysis }}</div>
+  </div>
+
+</section>
+
+<script>
+  document.querySelector('.result-section').scrollIntoView({ behavior: 'smooth' });
+</script>
+{% endif %}
+
+</body>
+</html>
