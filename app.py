@@ -15,7 +15,7 @@ import os
 brevo_configuration = sib_api_v3_sdk.Configuration()
 brevo_configuration.api_key['api-key'] = os.environ.get('BREVO_API_KEY')
 
-sender_email = "bharath.98458@gmail.com"
+sender_email = "bharath.98458@11274742.brevosend.com"
 sender_name = "Cancer Risk System"
 
 # -------------------------------------------------
